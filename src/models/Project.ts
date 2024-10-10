@@ -30,7 +30,7 @@ export const ProjectSchema : Schema =  new Schema({
             ref: 'Task'
         }
     ]
-  }, {timestamps: true});
+}, {timestamps: true});
 
   const Project = mongoose.model<IProject>('Project', ProjectSchema)
   export default Project

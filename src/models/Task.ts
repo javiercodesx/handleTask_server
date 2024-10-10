@@ -10,13 +10,14 @@ const taskStatus = {
 
 export type TaskStatus = typeof taskStatus[keyof typeof taskStatus]
 
-export interface Itask extends Document  {
+export interface Itask extends Document {
     name: string,
     description: string,
-    project: Types.ObjectId
+    project: Types.ObjectId,
+    status: TaskStatus
 }
 
-export const TaskSchema : Schema =  new Schema({
+export const TaskSchema : Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -38,5 +39,5 @@ export const TaskSchema : Schema =  new Schema({
     }
   }, {timestamps: true});
 
-  const Project = mongoose.model<Itask>('Task', TaskSchema)
-  export default Project
+  const Task = mongoose.model<Itask>('Task', TaskSchema)
+  export default Task
