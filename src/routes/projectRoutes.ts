@@ -62,6 +62,7 @@ router.post('/:projectId/tasks',
         .notEmpty().withMessage('The task must have a name'),
     body('description')
         .notEmpty().withMessage('The task must have a description'),
+    handleInputErrors,
     TaskController.createTask
 )
 
@@ -72,7 +73,19 @@ router.get('/:projectId/tasks',
 router.get('/:projectId/tasks/:taskId',
     param('taskId')
         .isMongoId().withMessage('Not valid ID'),
+    handleInputErrors,
     TaskController.getTaskById
+)
+
+router.put('/:projectId/tasks/:taskId',
+    param('taskId')
+        .isMongoId().withMessage('Not valid ID'),
+    body('name')
+        .notEmpty().withMessage('The task must have a name'),
+    body('description')
+        .notEmpty().withMessage('The task must have a description'),
+    handleInputErrors,
+    TaskController.updateTask
 )
 
 export default router
