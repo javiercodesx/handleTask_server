@@ -71,7 +71,7 @@ export class TaskController {
     static deleteTask = async (req: Request, res: Response) => {
         try {
             const { taskId } = req.params
-            const task = await Task.findById(taskId, req.body)
+            const task = await Task.findById(taskId)
             if(!task) {
                 const error = new Error('Task not found')
                 res.status(404).json({error: error.message})
@@ -88,6 +88,26 @@ export class TaskController {
             await Promise.allSettled([task.deleteOne(), req.project.save()])
 
             res.send("Task deleted correctly")
+        } catch (error) {
+            res.status(500).json({error: 'Theres a new error'})
+        }
+    }
+
+    static updateTaskStatus = async (req: Request, res: Response) => {
+        try {
+            const { taskId } = req.params
+            const task = await Task.findById(taskId)
+            if(!task) {
+                const error = new Error('Task not found')
+                res.status(404).json({error: error.message})
+                return
+            }
+
+            const { status } = req.body
+            task.status = status
+
+            await task.save()
+            res.send('Task updated!')
         } catch (error) {
             res.status(500).json({error: 'Theres a new error'})
         }
