@@ -24,3 +24,12 @@ export async function taskExists (req : Request, res: Response, next: NextFuncti
         res.status(500).json({error: 'Theres a new error'})
     }
 }
+
+export function taskBelongsToProject  (req : Request, res: Response, next: NextFunction) {
+    if(req.task.project.toString() !== req.project.id.toString()) {
+        const error = new Error('Not valid action')
+        res.status(400).json({error: error.message})
+        return
+    }
+    next()
+}
