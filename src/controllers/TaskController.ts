@@ -19,7 +19,7 @@ export class TaskController {
             const tasks = await Task.find({project: req.project.id}).populate('project')
             res.json(tasks)
         } catch (error) {
-            res.status(500).json({error: 'Theres a new error'})
+            res.status(500).json({error: 'An error occurred. We could not process your request'})
         }
     }
    
@@ -27,7 +27,7 @@ export class TaskController {
         try {
             res.json(req.task)
         } catch (error) {
-            res.status(500).json({error: 'Theres a new error'})
+            res.status(500).json({error: 'An error occurred. We could not process your request'})
         }
     }
     
@@ -45,7 +45,7 @@ export class TaskController {
 
             res.send("Task updated correctly")
         } catch (error) {
-            res.status(500).json({error: 'Theres a new error'})
+            res.status(500).json({error: 'An error occurred. We could not process your request'})
         }
     }
 
@@ -56,7 +56,7 @@ export class TaskController {
 
             res.send("Task deleted correctly")
         } catch (error) {
-            res.status(500).json({error: 'Theres a new error'})
+            res.status(500).json({error: 'An error occurred. We could not process your request'})
         }
     }
 
@@ -68,7 +68,7 @@ export class TaskController {
             await req.task.save()
             res.send('Task updated!')
         } catch (error) {
-            res.status(500).json({error: 'Theres a new error'})
+            res.status(500).json({error: 'An error occurred. We could not process your request'})
         }
     }
 

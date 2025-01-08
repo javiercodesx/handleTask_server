@@ -21,6 +21,6 @@ export async function projectExists(req : Request, res: Response, next: NextFunc
         req.project = project
         next()
     } catch (error) {
-        res.status(500).json({error: 'Theres a new error'})
+        res.status(500).json({error: 'An error occurred. We could not process your request'})
     }
 }

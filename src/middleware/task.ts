@@ -21,7 +21,7 @@ export async function taskExists (req : Request, res: Response, next: NextFuncti
         req.task = task
         next()
     } catch (error) {
-        res.status(500).json({error: 'Theres a new error'})
+        res.status(500).json({error: 'An error occurred. We could not process your request'})
     }
 }
 
