@@ -12,7 +12,7 @@ const userSchema : Schema = new Schema({
     password: { type: String, required: true},
     name: { type: String, required: true},
     confirmed: { type: Boolean, default: false}
-})
+}, {timestamps: true})
 
 const User = mongoose.model<IUser>('User', userSchema)
 export default User
