@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes'
 import projectRoutes from './routes/projectRoutes'
 import morgan from 'morgan'
 import cors, { CorsOptions } from 'cors'
+import 'dotenv/config'
 
 connectDB()
 
@@ -27,6 +28,8 @@ const corsOptions : CorsOptions = {
 
 // Cors
 app.use(cors(corsOptions))
+
+
 
 // Logging
 app.use(morgan('dev'))
