@@ -29,8 +29,6 @@ const corsOptions : CorsOptions = {
 // Cors
 app.use(cors(corsOptions))
 
-
-
 // Logging
 app.use(morgan('dev'))
 

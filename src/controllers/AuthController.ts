@@ -3,7 +3,7 @@ import User from "../models/User"
 import { hashPassword } from "../utilts/auth"
 import Token from "../models/Token"
 import { generateToken } from "../utilts/token"
-import { transporter } from "../config/nodemailer"
+import { AuthEmail } from "../emails/AuthEmail"
 
 export class AuthController {
 
@@ -30,12 +30,10 @@ export class AuthController {
             token.user = user.id
 
             // send email
-            await transporter.sendMail({
-                from: 'handleTask <admin@handleTask.com>',
-                to: user.email,
-                subject: 'handleTask - Confirm your account',
-                text: 'handleTask - Confirm your account',
-                html: `<p>Testing email</p>`
+            AuthEmail.sendConfirmationEmail({
+                email: user.email,
+                name: user.email,
+                token: token.token
             })
 
             await Promise.allSettled([user.save(), token.save()])
