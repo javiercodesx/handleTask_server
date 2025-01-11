@@ -11,7 +11,7 @@ export class AuthController {
         const { password, email } = req.body
         try {
             const userExists = await User.findOne({email})
-            if(userExists){
+            if(!userExists){
                 const error = new Error('Email already registered')
                 res.status(409).json({error: error.message})
                 return
