@@ -63,4 +63,18 @@ export class AuthController {
         }
     }
 
+    static login = async (req: Request, res: Response) => {
+        try {
+            const { email, password } = req.body
+            const user = await User.find({email})
+            if(!user) {
+                const error = new Error('User not found')
+                res.status(401).json({error: error.message})
+                return
+            }
+            res.send(user)
+        } catch (error) {
+            res.status(500).send({error: 'An error ocurred. We could not process your request'})
+        }
+    }
 }
