@@ -10,7 +10,8 @@ export class AuthController {
     static createAccount = async (req: Request, res: Response) => {
         const { password, email } = req.body
         try {
-            const userExists = await User.findOne({email})
+            console.log(email)
+            const userExists = await User.findOne({email: email})
             if(!userExists){
                 const error = new Error('Email already registered')
                 res.status(409).json({error: error.message})
@@ -66,9 +67,26 @@ export class AuthController {
     static login = async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body
-            const user = await User.find({email})
+            const user = await User.findOne({email})
             if(!user) {
                 const error = new Error('User not found')
+                res.status(401).json({error: error.message})
+                return
+            }
+            if(!user.confirmed) {
+                const token = new Token()
+                token.user = user.id
+                token.token = generateToken()
+                await token.save()
+                
+                // send email
+                AuthEmail.sendConfirmationEmail({
+                    email: user.email,
+                    name: user.name,
+                    token: token.token
+                })
+
+                const error = new Error('This account is not confirmed. We have sent a confirmation email')
                 res.status(401).json({error: error.message})
                 return
             }
