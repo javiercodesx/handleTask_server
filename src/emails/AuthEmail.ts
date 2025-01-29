@@ -83,7 +83,7 @@ export class AuthEmail {
                             <p>Hello ${user.name}</p>
                             <p>Thank you for creating an account with <strong>handleTask</strong>. Please confirm your email address to get started</p>
                             <div class="button-container">
-                                <a href="https://example.com/confirm?token=${user.token}" class="button">Confirm My Account</a>
+                                <a href="${process.env.FRONTEND_URL}/auth/confirm-account" class="button">Confirm My Account</a>
                             </div>
                             <p>Token: <code>${user.token}</code></p>
                             <p><strong>Important</strong> this link will expire in <strong>10 minutes</strong>.</p>
