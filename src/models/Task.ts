@@ -1,4 +1,4 @@
-import mongoose, {Schema, Document, Types}  from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 const taskStatus = {
     PENDING: 'pending',
@@ -17,7 +17,7 @@ export interface Itask extends Document {
     status: TaskStatus
 }
 
-export const TaskSchema : Schema = new Schema({
+export const TaskSchema: Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -37,7 +37,7 @@ export const TaskSchema : Schema = new Schema({
         enum: Object.values(taskStatus),
         default: taskStatus.PENDING
     }
-  }, {timestamps: true});
+}, { timestamps: true });
 
 const Task = mongoose.model<Itask>('Task', TaskSchema)
 export default Task
