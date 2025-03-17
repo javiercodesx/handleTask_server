@@ -136,4 +136,33 @@ export class AuthController {
             res.status(500).send({ error: 'An error ocurred. We could not process your request' })
         }
     }
+
+    static forgotPassword = async (req: Request, res: Response) => {
+        const { email } = req.body
+        try {
+            const user = await User.findOne({ email })
+            if (!user) {
+                const error = new Error('Email not registered')
+                res.status(404).json({ error: error.message })
+                return
+            }
+
+            // generate new token
+            const token = new Token()
+            token.token = generateToken()
+            token.user = user.id
+            await token.save()
+
+            // send email
+            AuthEmail.sendResetPasswordEmail({
+                email: user.email,
+                name: user.email,
+                token: token.token
+            })
+
+            res.send('Check your email for instructions')
+        } catch (error) {
+            res.status(500).send({ error: 'An error ocurred. We could not process your request' })
+        }
+    }
 }
