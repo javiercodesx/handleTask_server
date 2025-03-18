@@ -168,7 +168,7 @@ export class AuthController {
 
     static validateToken = async (req: Request, res: Response) => {
         try {
-            const { token } = req.body
+            const { token } = req.params
             const tokenExists = await Token.findOne({ token })
             if (!tokenExists) {
                 const error = new Error('Not valid token')
@@ -177,6 +177,27 @@ export class AuthController {
             }
 
             res.send('Valid token. Please set your new password')
+        } catch (error) {
+            res.status(500).send({ error: 'An error ocurred. We could not process your request' })
+        }
+    }
+
+    static updatePasswordWithToken = async (req: Request, res: Response) => {
+        try {
+            const { token } = req.body
+            const tokenExists = await Token.findOne({ token })
+            if (!tokenExists) {
+                const error = new Error('Not valid token')
+                res.status(401).json({ error: error.message })
+                return
+            }
+
+            const user = await User.findById(tokenExists.user)
+            user.password = await hashPassword(req.body.password)
+
+            await Promise.allSettled([user.save(), tokenExists.deleteOne()])
+
+            res.send('Password successfully modified')
         } catch (error) {
             res.status(500).send({ error: 'An error ocurred. We could not process your request' })
         }
