@@ -1,9 +1,10 @@
 import type { Request, Response } from "express"
 import User from "../models/User"
-import { checkPassword, hashPassword } from "../utilts/auth"
+import { checkPassword, hashPassword } from "../utils/auth"
 import Token from "../models/Token"
-import { generateToken } from "../utilts/token"
+import { generateToken } from "../utils/token"
 import { AuthEmail } from "../emails/AuthEmail"
+import { generateJWT } from "../utils/jwt"
 
 export class AuthController {
 
@@ -96,7 +97,9 @@ export class AuthController {
                 return
             }
 
-            res.send('Authenticated')
+            const token = generateJWT({ id: user.id })
+
+            res.send(token)
         } catch (error) {
             res.status(500).send({ error: 'An error ocurred. We could not process your request' })
         }
@@ -168,7 +171,7 @@ export class AuthController {
 
     static validateToken = async (req: Request, res: Response) => {
         try {
-            const { token } = req.params
+            const { token } = req.body
             const tokenExists = await Token.findOne({ token })
             if (!tokenExists) {
                 const error = new Error('Not valid token')
@@ -184,7 +187,7 @@ export class AuthController {
 
     static updatePasswordWithToken = async (req: Request, res: Response) => {
         try {
-            const { token } = req.body
+            const { token } = req.params
             const tokenExists = await Token.findOne({ token })
             if (!tokenExists) {
                 const error = new Error('Not valid token')

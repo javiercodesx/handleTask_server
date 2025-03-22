@@ -144,8 +144,7 @@ export class AuthEmail {
                         line-height: 1.5;
                         color: #333333;
                     }
-                    .button-container {
-                        text-align: center;
+                    .container {
                         margin: 40px 0;
                     }
                     .button {
@@ -172,8 +171,8 @@ export class AuthEmail {
                     <div class="content">
                         <p>Hello ${user.name},</p>
                         <p>We received a request to reset your password for your <strong>handleTask</strong> account. Visit the following link:</p>
-                        <div class="button-container">
-                            <a href="${process.env.FRONTEND_URL}/auth/new-password" class="button">Reset Password</a>
+                        <div class="container">
+                            <a href="${process.env.FRONTEND_URL}/auth/new-password" >Reset Password</a>
                         </div>
                         <h3>and enter this token <strong>${user.token}</strong>.</h3>
                         <p>If you did not request a password reset, please ignore this email.</p>
