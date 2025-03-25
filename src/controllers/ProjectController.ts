@@ -23,7 +23,7 @@ export class ProjectController {
                     { manager: { $in: req.user.id } }
                 ]
             })
-            
+
             res.json(projects)
         } catch (error) {
             console.log(error)
@@ -39,11 +39,11 @@ export class ProjectController {
                 return
             }
 
-            if(project.manager.toString() !== req.user.id.toString()) {
+            if (project.manager.toString() !== req.user.id.toString()) {
                 const error = new Error('Not valid action')
                 res.status(404).json({ error: error.message })
             }
-            
+
             res.json(project)
         } catch (error) {
             console.log(error)
@@ -60,6 +60,12 @@ export class ProjectController {
                 res.status(404).json({ error: error.message })
                 return
             }
+
+            if (project.manager.toString() !== req.user.id.toString()) {
+                const error = new Error('Not valid action')
+                res.status(404).json({ error: error.message })
+            }
+
             project.projectName = req.body.projectName
             project.clientName = req.body.clientName
             project.description = req.body.description
@@ -79,6 +85,11 @@ export class ProjectController {
                 const error = new Error('Project not found')
                 res.status(404).json({ error: error.message })
                 return
+            }
+
+            if (project.manager.toString() !== req.user.id.toString()) {
+                const error = new Error('Not valid action')
+                res.status(404).json({ error: error.message })
             }
 
             await project.deleteOne()
