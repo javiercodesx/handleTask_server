@@ -11,9 +11,9 @@ const router = Router()
 
 /** Routes for projects */
 
-router.post('/',
-    authenticate,
-    
+router.use(authenticate)
+
+router.post('/',    
     body('projectName')
         .notEmpty().withMessage('The project must have a project name'),
     body('clientName')

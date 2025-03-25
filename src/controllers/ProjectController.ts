@@ -18,7 +18,12 @@ export class ProjectController {
 
     static getAllProjects = async (req: Request, res: Response) => {
         try {
-            const projects = await Project.find({})
+            const projects = await Project.find({
+                $or: [
+                    { manager: { $in: req.user.id } }
+                ]
+            })
+            
             res.json(projects)
         } catch (error) {
             console.log(error)
@@ -33,6 +38,12 @@ export class ProjectController {
                 res.status(404).json({ error: error.message })
                 return
             }
+
+            if(project.manager.toString() !== req.user.id.toString()) {
+                const error = new Error('Not valid action')
+                res.status(404).json({ error: error.message })
+            }
+            
             res.json(project)
         } catch (error) {
             console.log(error)
