@@ -13,7 +13,7 @@ const router = Router()
 
 router.use(authenticate)
 
-router.post('/',    
+router.post('/',
     body('projectName')
         .notEmpty().withMessage('The project must have a project name'),
     body('clientName')

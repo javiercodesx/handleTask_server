@@ -205,4 +205,9 @@ export class AuthController {
             res.status(500).send({ error: 'An error ocurred. We could not process your request' })
         }
     }
+
+    static user = async (req: Request, res: Response) => {
+        res.json(req.user)
+        return 
+    }
 }
