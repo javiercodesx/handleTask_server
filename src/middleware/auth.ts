@@ -15,6 +15,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     if (!bearer) {
         const error = new Error('Not authorized')
         res.status(401).json({ error: error.message })
+        return
     }
 
     const token = bearer.split(' ')[1]
@@ -26,7 +27,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
             const user = await User.findById(decoded.id).select('id name email')
             if (user) {
                 req.user = user
-                next()
+
             } else {
                 res.status(500).json({ error: 'Not valid token' })
             }
@@ -34,4 +35,5 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     } catch (error) {
         res.status(500).json({ error: 'Not valid token' })
     }
+    next()
 }
