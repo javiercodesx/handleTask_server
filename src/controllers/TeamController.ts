@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import User from "../models/User"
+import Project from "../models/Project"
 
 export class TeamMemberController {
 
@@ -35,6 +36,15 @@ export class TeamMemberController {
         res.send('User added successfully')
     }
 
+    static getProjectTeam = async (req: Request, res: Response) => {
+        const project = await Project.findById(req.project.id).populate({
+            path: "team",
+            select: "id email name"
+        })
+
+        res.json(project.team)
+    }
+
     static removeMemberById = async (req: Request, res: Response) => {
         const { id } = req.body
         if (!req.project.team.some(team => team.toString() === id.toString())) {
@@ -42,9 +52,9 @@ export class TeamMemberController {
             res.status(409).json({ error: error.message })
             return
         }
-        
+
         req.project.team = req.project.team.filter(teamMember => teamMember.toString() !== id.toString())
-        
+
         await req.project.save()
         res.send('User deleted successfully')
     }
