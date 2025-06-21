@@ -8,8 +8,8 @@ import { generateJWT } from "../utils/jwt"
 
 export class AuthController {
 
-    static createAccount = async (req: Request, res: Response) => {
-        const { password, email } = req.body
+    static createAccount = async (req: Request, res: Response): Promise<void> => {
+        const { password, email }: { password: string; email: string } = req.body;
         try {
             const userExists = await User.findOne({ email })
             if (userExists) {
@@ -208,6 +208,6 @@ export class AuthController {
 
     static user = async (req: Request, res: Response) => {
         res.json(req.user)
-        return 
+        return
     }
 }
