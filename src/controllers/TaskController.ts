@@ -25,9 +25,12 @@ export class TaskController {
 
     static getTaskById = async (req: Request, res: Response) => {
         try {
+            const task = await Task.findById(req.task?.id)
+                .populate({ path: 'completedBy', select: 'id name email' });
+                
             res.json(req.task)
         } catch (error) {
-            res.status(500).json({ error: 'An error occurred. We could not process your request' })
+            res.status(500).json({ error: 'An error occurred. We could not process your request' });
         }
     }
 
