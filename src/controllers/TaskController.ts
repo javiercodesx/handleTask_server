@@ -16,26 +16,26 @@ export class TaskController {
 
     static getProjectTasks = async (req: Request, res: Response) => {
         try {
-            const tasks = await Task.find({project: req.project.id}).populate('project')
+            const tasks = await Task.find({ project: req.project.id }).populate('project')
             res.json(tasks)
         } catch (error) {
-            res.status(500).json({error: 'An error occurred. We could not process your request'})
+            res.status(500).json({ error: 'An error occurred. We could not process your request' })
         }
     }
-   
+
     static getTaskById = async (req: Request, res: Response) => {
         try {
             res.json(req.task)
         } catch (error) {
-            res.status(500).json({error: 'An error occurred. We could not process your request'})
+            res.status(500).json({ error: 'An error occurred. We could not process your request' })
         }
     }
-    
+
     static updateTask = async (req: Request, res: Response) => {
         try {
-            if(req.task.project.toString() !== req.project.id) {
+            if (req.task.project.toString() !== req.project.id) {
                 const error = new Error('Not valid action')
-                res.status(400).json({error: error.message})
+                res.status(400).json({ error: error.message })
                 return
             }
 
@@ -45,7 +45,7 @@ export class TaskController {
 
             res.send("Task updated correctly")
         } catch (error) {
-            res.status(500).json({error: 'An error occurred. We could not process your request'})
+            res.status(500).json({ error: 'An error occurred. We could not process your request' })
         }
     }
 
@@ -56,19 +56,24 @@ export class TaskController {
 
             res.send("Task deleted correctly")
         } catch (error) {
-            res.status(500).json({error: 'An error occurred. We could not process your request'})
+            res.status(500).json({ error: 'An error occurred. We could not process your request' })
         }
     }
 
     static updateTaskStatus = async (req: Request, res: Response) => {
         try {
-            const { status } = req.body
-            req.task.status = status
+            const { status } = req.body;
+            req.task.status = status;
+            if (status === 'pending') {
+                req.task?.completedBy = null;
+            } else {
+                req.task?.completedBy = req.user?.id;
+            }
 
-            await req.task.save()
-            res.send('Task updated!')
+            await req.task.save();
+            res.send('Task updated!');
         } catch (error) {
-            res.status(500).json({error: 'An error occurred. We could not process your request'})
+            res.status(500).json({ error: 'An error occurred. We could not process your request' });
         }
     }
 
